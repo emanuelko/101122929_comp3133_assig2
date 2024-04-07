@@ -1,23 +1,18 @@
 import { Injectable } from '@angular/core';
 import { User } from './models/user';
+import { sample_user } from '../../data';
 import { Employee } from './models/employee';
+import { sample_employee } from '../../data';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { IUserLogin } from './IUserLogin';
-import { BASE_URL, USER_LOGIN_URL } from './urls';
-import { ToastrService } from 'ngx-toastr';
-const USER_KEY = 'User'
+import { Observable } from 'rxjs';
+import { BASE_URL } from './urls';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private userSubject = new BehaviorSubject<User>((this.getUserFromLocalStorage()))
-  private userObservable:Observable<User>
 
-  constructor(private http:HttpClient, private toastrService:ToastrService) {
-    this.userObservable = this.userSubject.asObservable()
-   }
+  constructor(private http:HttpClient) { }
 
   getUsers():Observable<User[]>{
     return this.http.get<User[]>(BASE_URL)
@@ -25,37 +20,5 @@ export class UserService {
 
   getEmployees():Observable<Employee[]>{
     return this.http.get<Employee[]>(BASE_URL)
-  }
-
-  login(userLogin:IUserLogin):Observable<User>{
-    return this.http.post<User>(USER_LOGIN_URL, userLogin).pipe(
-      tap({
-        next: (user) => {
-          this.setUserToLocalStorage(user)
-          this.userSubject.next(user);
-          this.toastrService.success(
-            'Login Successful'
-          );
-        },
-        error: (errorResponse) => {
-          this.toastrService.error(errorResponse.error, 'Login Failed');
-        }
-      })
-    );
-  }
-  logout(){
-    this.userSubject.next(new User())
-    localStorage.removeItem(USER_KEY)
-    window.location.reload()
-  }
-
-  private setUserToLocalStorage(user:User){
-    localStorage.setItem(USER_KEY, JSON.stringify(user))
-  }
-  private getUserFromLocalStorage():User{
-    const userJson = localStorage.getItem(USER_KEY)
-    if(userJson) 
-      return JSON.parse(userJson) as User
-    return new User()
   }
 }
