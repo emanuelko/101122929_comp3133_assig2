@@ -1,0 +1,29 @@
+header{
+    position: relative;
+    background: white;
+    padding: 0;
+    border-bottom: 2px solid black;
+}
+a{
+    color:blue;
+}
+a:hover{
+    color:blueviolet;
+}
+.container{
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+a.title{
+    font-weight: bold;
+    font-size: 25px;
+}
+ul{
+    display:flex;
+    list-style-type: none;
+    margin:0;
+}
+ul a{
+    padding: 2rem;
+}

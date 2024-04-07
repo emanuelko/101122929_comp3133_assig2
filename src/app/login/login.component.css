@@ -1,0 +1,14 @@
+input{
+    margin: 10px;
+}
+
+button{
+    margin: auto;
+    display: table;
+}
+
+h1{
+    font-weight: 1000;
+    margin: auto;
+    display: table;
+}
